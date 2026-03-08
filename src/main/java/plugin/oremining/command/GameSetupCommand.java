@@ -15,7 +15,7 @@ public class GameSetupCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command,
-      @NonNull String label, @NonNull String[] args) {
+      @NonNull String label, @NonNull String @NonNull [] args) {
     if (sender instanceof Player player) {
 
       resetPlayerStatus(player);
