@@ -1,6 +1,6 @@
 name: OreMining
 version: '1.0-SNAPSHOT'
-main: plugin.oremining.OreMining
+main: plugin.oremining.Main
 api-version: '1.21'
 commands:
   gameSetup:
