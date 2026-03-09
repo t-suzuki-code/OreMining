@@ -6,12 +6,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
+import plugin.oremining.Main;
 import plugin.oremining.OrePlacement;
 import plugin.oremining.SchedulerManager;
 import plugin.oremining.WorldGeneration;
 
 public class WorldTeleportListener implements Listener {
 
+  private final Main main;
+
+  public WorldTeleportListener(Main main) {
+    this.main = main;
+  }
 
   @EventHandler
   public void onPlayerPortal(PlayerPortalEvent e) {
@@ -27,7 +33,7 @@ public class WorldTeleportListener implements Listener {
 
     player.teleport(teleportWorld.getSpawnLocation());
 
-    SchedulerManager schedulerManager = new SchedulerManager(player, location, teleportWorld);
+    SchedulerManager schedulerManager = new SchedulerManager(player, location, teleportWorld, main);
     schedulerManager.gameStart();
   }
 }
