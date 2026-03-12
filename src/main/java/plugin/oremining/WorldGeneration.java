@@ -7,7 +7,7 @@ import org.bukkit.WorldCreator;
 public class WorldGeneration {
 
 
-  private World world;
+  private final World world;
 
   public WorldGeneration() {
     WorldCreator creator = new WorldCreator("OreMiningWorld");
