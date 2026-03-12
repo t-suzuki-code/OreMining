@@ -7,10 +7,10 @@ import org.bukkit.entity.Player;
 
 public class SchedulerManager {
 
-  private Player player;
-  private Location location;
-  private World world;
-  private Main main;
+  private final Player player;
+  private final Location location;
+  private final World world;
+  private final Main main;
   private int gameTime = 60;
 
   public SchedulerManager(Player player, Location location, World world, Main main) {
@@ -31,7 +31,7 @@ public class SchedulerManager {
         PlayerUtils.resetPlayerStatus(player);
         return;
       }
-      player.sendTitle("残り時間は" + gameTime + "秒です！", "", 0, 20, 0);
+      player.sendTitle("残り時間は" + gameTime + "秒です！", "", 0, 40, 0);
       gameTime -= 20;
     }, 0, 20 * 20);
   }

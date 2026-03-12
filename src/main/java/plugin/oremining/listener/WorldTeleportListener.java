@@ -7,7 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import plugin.oremining.Main;
-import plugin.oremining.OrePlacement;
+import plugin.oremining.MiningAreaBuilder;
+import plugin.oremining.PlayerUtils;
 import plugin.oremining.SchedulerManager;
 import plugin.oremining.WorldGeneration;
 
@@ -28,12 +29,15 @@ public class WorldTeleportListener implements Listener {
     WorldGeneration worldGeneration = new WorldGeneration();
     World teleportWorld = worldGeneration.getWorld();
 
-    OrePlacement orePlacement = new OrePlacement(teleportWorld);
-    orePlacement.placeRandomOres();
+    MiningAreaBuilder miningAreaBuilder = new MiningAreaBuilder(teleportWorld);
+    miningAreaBuilder.buildMiningArea();
 
     player.teleport(teleportWorld.getSpawnLocation());
+
+    PlayerUtils.removePortal();
 
     SchedulerManager schedulerManager = new SchedulerManager(player, location, teleportWorld, main);
     schedulerManager.gameStart();
   }
+
 }
