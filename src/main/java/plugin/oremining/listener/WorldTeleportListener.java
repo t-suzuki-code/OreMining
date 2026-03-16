@@ -15,9 +15,11 @@ import plugin.oremining.WorldGeneration;
 public class WorldTeleportListener implements Listener {
 
   private final Main main;
+  private PlayerScoreListener playerScoreListener;
 
-  public WorldTeleportListener(Main main) {
+  public WorldTeleportListener(Main main, PlayerScoreListener playerScoreListener) {
     this.main = main;
+    this.playerScoreListener = playerScoreListener;
   }
 
   @EventHandler
@@ -34,10 +36,14 @@ public class WorldTeleportListener implements Listener {
 
     player.teleport(teleportWorld.getSpawnLocation());
 
+    playerScoreListener.setTeleportWorld(teleportWorld);
+
     PlayerUtils.removePortal();
 
-    SchedulerManager schedulerManager = new SchedulerManager(player, location, teleportWorld, main);
+    SchedulerManager schedulerManager = new SchedulerManager(player, location, teleportWorld, main,
+        playerScoreListener);
     schedulerManager.gameStart();
+
   }
 
 }
