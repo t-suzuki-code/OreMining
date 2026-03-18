@@ -1,5 +1,7 @@
 package plugin.oremining.listener;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -10,23 +12,20 @@ import plugin.oremining.Main;
 
 public class PlayerScoreListener implements Listener {
 
-  private final Main main;
   private int count;
+
+  @Getter
+  private final Main main;
+  @Getter
   private int playerScore;
-  private Material oreType;
+
+  @Setter
   private World teleportWorld;
 
+  private Material oreType;
 
   public PlayerScoreListener(Main main) {
     this.main = main;
-  }
-
-  public void setTeleportWorld(World teleportWorld) {
-    this.teleportWorld = teleportWorld;
-  }
-
-  public int getPlayerScore() {
-    return playerScore;
   }
 
   public void reset() {

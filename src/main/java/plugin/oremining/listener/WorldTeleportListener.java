@@ -15,7 +15,7 @@ import plugin.oremining.WorldGeneration;
 public class WorldTeleportListener implements Listener {
 
   private final Main main;
-  private PlayerScoreListener playerScoreListener;
+  private final PlayerScoreListener playerScoreListener;
 
   public WorldTeleportListener(Main main, PlayerScoreListener playerScoreListener) {
     this.main = main;

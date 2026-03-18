@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import plugin.oremining.listener.PlayerScoreListener;
+import plugin.oremining.mapper.data.PlayerScore;
 
 public class SchedulerManager {
 
@@ -13,6 +14,7 @@ public class SchedulerManager {
   private final World world;
   private final Main main;
   private final PlayerScoreListener playerScoreListener;
+  private final DBManager dbManager = new DBManager();
   private int gameTime = 60;
 
   public SchedulerManager(Player player, Location location, World world, Main main,
@@ -33,6 +35,10 @@ public class SchedulerManager {
         player.teleport(location);
         Bukkit.unloadWorld(world, false);
         PlayerUtils.resetPlayerStatus(player);
+
+        dbManager.insert(new PlayerScore(player.getName(),
+            playerScoreListener.getPlayerScore()));
+
         playerScoreListener.reset();
         return;
       }
