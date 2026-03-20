@@ -11,17 +11,20 @@ public final class Main extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    getCommand("gameSetup").setExecutor(new GameSetupCommand());
+
+    GameSetupCommand gameSetupCommand = new GameSetupCommand(this);
+    getCommand("gameSetup").setExecutor(gameSetupCommand);
     getCommand("viewScore").setExecutor(new ViewScoreCommand());
 
     PlayerScoreListener playerScoreListener = new PlayerScoreListener(this);
     Bukkit.getPluginManager().registerEvents(playerScoreListener, this);
 
     WorldTeleportListener worldTeleportListener = new WorldTeleportListener(this,
-        playerScoreListener);
+        playerScoreListener, gameSetupCommand);
     Bukkit.getPluginManager().registerEvents(worldTeleportListener, this);
 
   }
+
 }
 
 

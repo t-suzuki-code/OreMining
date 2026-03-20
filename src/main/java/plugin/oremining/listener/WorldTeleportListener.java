@@ -11,15 +11,19 @@ import plugin.oremining.MiningAreaBuilder;
 import plugin.oremining.PlayerUtils;
 import plugin.oremining.SchedulerManager;
 import plugin.oremining.WorldGeneration;
+import plugin.oremining.command.GameSetupCommand;
 
 public class WorldTeleportListener implements Listener {
 
   private final Main main;
   private final PlayerScoreListener playerScoreListener;
+  private final GameSetupCommand gameSetupCommand;
 
-  public WorldTeleportListener(Main main, PlayerScoreListener playerScoreListener) {
+  public WorldTeleportListener(Main main, PlayerScoreListener playerScoreListener,
+      GameSetupCommand gameSetupCommand) {
     this.main = main;
     this.playerScoreListener = playerScoreListener;
+    this.gameSetupCommand = gameSetupCommand;
   }
 
   @EventHandler
@@ -27,6 +31,7 @@ public class WorldTeleportListener implements Listener {
     Player player = e.getPlayer();
     Location location = player.getLocation();
     e.setCancelled(true);
+    gameSetupCommand.resetGameSetup();
 
     WorldGeneration worldGeneration = new WorldGeneration();
     World teleportWorld = worldGeneration.getWorld();
@@ -43,7 +48,6 @@ public class WorldTeleportListener implements Listener {
     SchedulerManager schedulerManager = new SchedulerManager(player, location, teleportWorld, main,
         playerScoreListener);
     schedulerManager.gameStart();
-
   }
 
 }
