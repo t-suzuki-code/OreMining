@@ -35,14 +35,8 @@ public class SchedulerManager {
     gameTask = Bukkit.getScheduler().runTaskTimer(main, () -> {
       if (gameTime <= 0) {
 
-        dbManager.insert(new PlayerScore(player.getName(),
-            playerScoreListener.getPlayerScore()));
-
-        gameTask.cancel();
-        player.teleport(gameSetupCommand.getGameStartLocation());
-
+        dbManager.insert(new PlayerScore(player.getName(), playerScoreListener.getPlayerScore()));
         endGame();
-
         return;
       }
       player.sendTitle("残り時間は" + gameTime + "秒です！", "", 0, 40, 0);
@@ -50,13 +44,39 @@ public class SchedulerManager {
     }, 0, 20 * 20);
   }
 
-  public void resetGameTask() {
+
+  /**
+   * ゲームが正常に終了した時の後処理を行います。
+   */
+  public void endGame() {
+    player.teleport(gameSetupCommand.getGameStartLocation());
+    gameTask.cancel();
+    Bukkit.unloadWorld(world, false);
+    PlayerUtils.resetPlayerStatus(player);
+    gameSetupCommand.resetIsGameReady();
+    gameSetupCommand.resetIsGamePlay();
+    playerScoreListener.reset();
+  }
+
+  /**
+   * ゲームプレイ中にプレイヤーが死亡、ログアウトした際にタイマーを終了させます。
+   */
+  public void cancelGameTask() {
     gameTask.cancel();
   }
 
-  public void endGame() {
+  /**
+   * ゲームプレイ中にプレイヤーが死亡、ログアウトした際にワールドの削除をします。
+   */
+  public void unloadGameWorld() {
     Bukkit.unloadWorld(world, false);
-    PlayerUtils.resetPlayerStatus(player);
+  }
+
+
+  /**
+   * ゲームプレイ中にプレイヤーが死亡、ログアウトした際にプレイヤー状態を初期化します。 フラグ・スコアをリセットします。ワールド削除・テレポートは含みません。
+   */
+  public void cleanupGame() {
     gameSetupCommand.resetIsGameReady();
     gameSetupCommand.resetIsGamePlay();
     playerScoreListener.reset();

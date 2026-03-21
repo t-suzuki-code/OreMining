@@ -32,7 +32,6 @@ public class WorldTeleportListener implements Listener {
     Location location = player.getLocation();
     e.setCancelled(true);
     gameSetupCommand.resetGameReadyTask();
-    gameSetupCommand.startIsGamePlay();
 
     WorldGeneration worldGeneration = new WorldGeneration();
     World teleportWorld = worldGeneration.getWorld();
@@ -50,6 +49,7 @@ public class WorldTeleportListener implements Listener {
         playerScoreListener, gameSetupCommand);
     gameSetupCommand.setSchedulerManager(schedulerManager);
     schedulerManager.gameStart();
+    gameSetupCommand.startIsGamePlay();
   }
 
 }

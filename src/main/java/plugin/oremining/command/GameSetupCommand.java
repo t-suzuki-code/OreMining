@@ -52,7 +52,7 @@ public class GameSetupCommand extends BaseCommand {
       }.runTaskLater(main, 20 * 30);
 
     } else {
-      player.sendMessage("ゲーム準備状態のため、コマンドを実行できません。");
+      player.sendMessage("ゲームプレイ中のため、コマンドの処理を実行できません。");
     }
     return true;
   }
@@ -88,12 +88,16 @@ public class GameSetupCommand extends BaseCommand {
     this.schedulerManager = schedulerManager;
   }
 
-  public void endGame() {
-    schedulerManager.endGame();
+  public void cancelGameTask() {
+    schedulerManager.cancelGameTask();
   }
 
-  public void resetGameTask() {
-    schedulerManager.resetGameTask();
+  public void unloadGameWorld() {
+    schedulerManager.unloadGameWorld();
+  }
+
+  public void cleanupGame() {
+    schedulerManager.cleanupGame();
   }
 
 }
