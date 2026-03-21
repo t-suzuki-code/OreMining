@@ -11,6 +11,8 @@ import plugin.oremining.PlayerUtils;
 public class GameSetupCommand extends BaseCommand {
 
   private final Main main;
+
+
   private boolean isGameReady = false;
   private BukkitTask task;
 
@@ -49,6 +51,14 @@ public class GameSetupCommand extends BaseCommand {
   public boolean onExecuteConsoleCommand(CommandSender sender, Command command, String label,
       String[] args) {
     return false;
+  }
+
+  public void resetTask() {
+    task.cancel();
+  }
+
+  public void resetIsGameReady() {
+    isGameReady = false;
   }
 
   public void resetGameSetup() {
