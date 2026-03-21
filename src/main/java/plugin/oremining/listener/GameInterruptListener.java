@@ -3,6 +3,8 @@ package plugin.oremining.listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import plugin.oremining.Main;
 import plugin.oremining.PlayerUtils;
@@ -23,7 +25,7 @@ public class GameInterruptListener implements Listener {
 
     if (gameSetupCommand.isGamePlay() && gameSetupCommand.isGameReady()) {
 
-      gameSetupCommand.resetGameTask();
+      gameSetupCommand.cancelGameTask();
 
     } else if (gameSetupCommand.isGameReady()) {
 
@@ -36,12 +38,44 @@ public class GameInterruptListener implements Listener {
   public void onPlayerRespawn(PlayerRespawnEvent e) {
     if (gameSetupCommand.isGameReady() && gameSetupCommand.isGamePlay()) {
       e.setRespawnLocation(gameSetupCommand.getGameStartLocation());
-      gameSetupCommand.endGame();
+      gameSetupCommand.unloadGameWorld();
+      gameSetupCommand.cleanupGame();
+      PlayerUtils.resetPlayerStatus(e.getPlayer());
 
     } else if (gameSetupCommand.isGameReady()) {
       e.setRespawnLocation(gameSetupCommand.getGameStartLocation());
       gameSetupCommand.resetIsGameReady();
       PlayerUtils.removePortal();
+    }
+  }
+
+  @EventHandler
+  public void onPlayerLogout(PlayerQuitEvent e) {
+    if (gameSetupCommand.isGameReady() && gameSetupCommand.isGamePlay()) {
+
+      gameSetupCommand.cancelGameTask();
+      gameSetupCommand.unloadGameWorld();
+
+    } else if (gameSetupCommand.isGameReady()) {
+
+      gameSetupCommand.resetGameSetup();
+      PlayerUtils.removePortal();
+    }
+  }
+
+  @EventHandler
+  public void onPlayerJoin(PlayerJoinEvent e) {
+
+    if (gameSetupCommand.isGameReady() && gameSetupCommand.isGamePlay()) {
+
+      if (e.getPlayer().isDead()) {
+        return;
+      }
+
+      e.getPlayer().teleport(gameSetupCommand.getGameStartLocation());
+      gameSetupCommand.cleanupGame();
+      PlayerUtils.resetPlayerStatus(e.getPlayer());
+
     }
   }
 }
