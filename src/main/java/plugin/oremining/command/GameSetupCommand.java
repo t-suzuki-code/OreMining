@@ -1,5 +1,7 @@
 package plugin.oremining.command;
 
+import lombok.Getter;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -7,14 +9,21 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import plugin.oremining.Main;
 import plugin.oremining.PlayerUtils;
+import plugin.oremining.SchedulerManager;
 
 public class GameSetupCommand extends BaseCommand {
 
   private final Main main;
+  private SchedulerManager schedulerManager;
 
-
+  @Getter
   private boolean isGameReady = false;
-  private BukkitTask task;
+  @Getter
+  private boolean isGamePlay = false;
+  @Getter
+  private Location gameStartLocation;
+
+  private BukkitTask gameReadyTask;
 
   public GameSetupCommand(Main main) {
     this.main = main;
@@ -27,12 +36,13 @@ public class GameSetupCommand extends BaseCommand {
     if (!isGameReady) {
 
       isGameReady = true;
+      gameStartLocation = player.getLocation();
       PlayerUtils.resetPlayerStatus(player);
       PlayerUtils.generatePortal(player);
       player.sendMessage("ゲーム準備状態になりました。ポータルに入りゲームを開始してください！");
       player.sendMessage("ポータルに入らなかった場合、ゲーム準備状態は30秒で終了します。");
 
-      task = new BukkitRunnable() {
+      gameReadyTask = new BukkitRunnable() {
         @Override
         public void run() {
           player.sendMessage("30秒経過したため、ゲーム準備状態を終了しました。");
@@ -53,8 +63,8 @@ public class GameSetupCommand extends BaseCommand {
     return false;
   }
 
-  public void resetTask() {
-    task.cancel();
+  public void resetGameReadyTask() {
+    gameReadyTask.cancel();
   }
 
   public void resetIsGameReady() {
@@ -62,10 +72,29 @@ public class GameSetupCommand extends BaseCommand {
   }
 
   public void resetGameSetup() {
-    task.cancel();
+    gameReadyTask.cancel();
     isGameReady = false;
   }
 
+  public void startIsGamePlay() {
+    isGamePlay = true;
+  }
+
+  public void resetIsGamePlay() {
+    isGamePlay = false;
+  }
+
+  public void setSchedulerManager(SchedulerManager schedulerManager) {
+    this.schedulerManager = schedulerManager;
+  }
+
+  public void endGame() {
+    schedulerManager.endGame();
+  }
+
+  public void resetGameTask() {
+    schedulerManager.resetGameTask();
+  }
 
 }
 

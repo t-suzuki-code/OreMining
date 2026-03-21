@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import plugin.oremining.command.GameSetupCommand;
 import plugin.oremining.command.ViewScoreCommand;
+import plugin.oremining.listener.GameInterruptListener;
 import plugin.oremining.listener.PlayerScoreListener;
 import plugin.oremining.listener.WorldTeleportListener;
 
@@ -22,6 +23,9 @@ public final class Main extends JavaPlugin {
     WorldTeleportListener worldTeleportListener = new WorldTeleportListener(this,
         playerScoreListener, gameSetupCommand);
     Bukkit.getPluginManager().registerEvents(worldTeleportListener, this);
+
+    GameInterruptListener gameInterruptListener = new GameInterruptListener(this, gameSetupCommand);
+    Bukkit.getPluginManager().registerEvents(gameInterruptListener, this);
 
   }
 
