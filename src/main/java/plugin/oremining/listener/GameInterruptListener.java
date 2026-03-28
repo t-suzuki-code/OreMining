@@ -6,76 +6,33 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import plugin.oremining.Main;
-import plugin.oremining.PlayerUtils;
-import plugin.oremining.command.GameSetupCommand;
+import plugin.oremining.GameStateManager;
 
 public class GameInterruptListener implements Listener {
 
-  private final Main main;
-  private final GameSetupCommand gameSetupCommand;
+  private final GameStateManager gameStateManager;
 
-  public GameInterruptListener(Main main, GameSetupCommand gameSetupCommand) {
-    this.main = main;
-    this.gameSetupCommand = gameSetupCommand;
+  public GameInterruptListener(GameStateManager gameStateManager) {
+    this.gameStateManager = gameStateManager;
   }
 
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent e) {
-
-    if (gameSetupCommand.isGamePlay() && gameSetupCommand.isGameReady()) {
-
-      gameSetupCommand.cancelGameTask();
-
-    } else if (gameSetupCommand.isGameReady()) {
-
-      gameSetupCommand.resetGameReadyTask();
-
-    }
+    gameStateManager.onPlayerDeath();
   }
 
   @EventHandler
   public void onPlayerRespawn(PlayerRespawnEvent e) {
-    if (gameSetupCommand.isGameReady() && gameSetupCommand.isGamePlay()) {
-      e.setRespawnLocation(gameSetupCommand.getGameStartLocation());
-      gameSetupCommand.unloadGameWorld();
-      gameSetupCommand.cleanupGame();
-      PlayerUtils.resetPlayerStatus(e.getPlayer());
-
-    } else if (gameSetupCommand.isGameReady()) {
-      e.setRespawnLocation(gameSetupCommand.getGameStartLocation());
-      gameSetupCommand.resetIsGameReady();
-      PlayerUtils.removePortal();
-    }
+    gameStateManager.onPlayerRespawn(e);
   }
 
   @EventHandler
   public void onPlayerLogout(PlayerQuitEvent e) {
-    if (gameSetupCommand.isGameReady() && gameSetupCommand.isGamePlay()) {
-
-      gameSetupCommand.cancelGameTask();
-      gameSetupCommand.unloadGameWorld();
-
-    } else if (gameSetupCommand.isGameReady()) {
-
-      gameSetupCommand.resetGameSetup();
-      PlayerUtils.removePortal();
-    }
+    gameStateManager.onPlayerQuit();
   }
 
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent e) {
-
-    if (gameSetupCommand.isGameReady() && gameSetupCommand.isGamePlay()) {
-
-      if (e.getPlayer().isDead()) {
-        return;
-      }
-
-      e.getPlayer().teleport(gameSetupCommand.getGameStartLocation());
-      gameSetupCommand.cleanupGame();
-      PlayerUtils.resetPlayerStatus(e.getPlayer());
-
-    }
+    gameStateManager.onPlayerJoin(e);
   }
 }

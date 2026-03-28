@@ -8,31 +8,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import plugin.oremining.Main;
 
 public class PlayerScoreListener implements Listener {
 
-  private int count;
 
-  @Getter
-  private final Main main;
+  private int count;
+  private Material oreType;
+
   @Getter
   private int playerScore;
-
   @Setter
   private World teleportWorld;
 
-  private Material oreType;
-
-  public PlayerScoreListener(Main main) {
-    this.main = main;
-  }
-
-  public void reset() {
-    count = 0;
-    playerScore = 0;
-    oreType = null;
-  }
 
   @EventHandler
   public void onBlockBreak(BlockBreakEvent e) {
@@ -71,6 +58,15 @@ public class PlayerScoreListener implements Listener {
         }
       }
     }
+  }
+
+  /**
+   * PlayerScoreListenerクラスのフィールド情報をリセットします。
+   */
+  public void resetPlayerScore() {
+    playerScore = 0;
+    count = 0;
+    oreType = null;
   }
 }
 
