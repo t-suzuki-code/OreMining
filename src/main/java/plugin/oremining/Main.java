@@ -13,19 +13,23 @@ public final class Main extends JavaPlugin {
   @Override
   public void onEnable() {
 
-    GameSetupCommand gameSetupCommand = new GameSetupCommand(this);
+    PlayerScoreListener playerScoreListener = new PlayerScoreListener();
+    Bukkit.getPluginManager().registerEvents(playerScoreListener, this);
+
+    DBManager dbManager = new DBManager();
+
+    GameStateManager gameStateManager = new GameStateManager(this, playerScoreListener, dbManager);
+
+    GameSetupCommand gameSetupCommand = new GameSetupCommand(gameStateManager);
     getCommand("gameSetup").setExecutor(gameSetupCommand);
     getCommand("viewScore").setExecutor(new ViewScoreCommand());
 
-    PlayerScoreListener playerScoreListener = new PlayerScoreListener(this);
-    Bukkit.getPluginManager().registerEvents(playerScoreListener, this);
-
-    WorldTeleportListener worldTeleportListener = new WorldTeleportListener(this,
-        playerScoreListener, gameSetupCommand);
+    WorldTeleportListener worldTeleportListener = new WorldTeleportListener(gameStateManager);
     Bukkit.getPluginManager().registerEvents(worldTeleportListener, this);
 
-    GameInterruptListener gameInterruptListener = new GameInterruptListener(this, gameSetupCommand);
+    GameInterruptListener gameInterruptListener = new GameInterruptListener(gameStateManager);
     Bukkit.getPluginManager().registerEvents(gameInterruptListener, this);
+
 
   }
 

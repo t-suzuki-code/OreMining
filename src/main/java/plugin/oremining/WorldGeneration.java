@@ -1,5 +1,6 @@
 package plugin.oremining;
 
+import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -19,6 +20,22 @@ public class WorldGeneration {
   }
 
   public void removeWorld() {
+
     Bukkit.unloadWorld(world, false);
+
+    File worldFolder = world.getWorldFolder();
+    deleteDirectory(worldFolder);
+  }
+
+  private void deleteDirectory(File dir) {
+    if (dir.isDirectory()) {
+      File[] files = dir.listFiles();
+      if (files != null) {
+        for (File file : files) {
+          deleteDirectory(file);
+        }
+      }
+    }
+    dir.delete();
   }
 }
