@@ -89,7 +89,7 @@ public class GameStateManager {
       World teleportWorld = worldGeneration.getWorld();
 
       MiningAreaBuilder miningAreaBuilder = new MiningAreaBuilder(teleportWorld);
-      miningAreaBuilder.buildMiningArea();
+      miningAreaBuilder.build();
 
       player.teleport(teleportWorld.getSpawnLocation());
       playerScoreListener.setTeleportWorld(teleportWorld);
