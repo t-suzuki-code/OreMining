@@ -2,6 +2,7 @@ package plugin.oremining;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -27,6 +28,7 @@ public class GameStateManager {
   private Location gameStartLocation;
   private BukkitTask gameReadyTask;
 
+
   private final List<Location> portalLocationList = new ArrayList<>();
 
   public GameStateManager(Main main, PlayerScoreListener playerScoreListener, DBManager dbManager) {
@@ -49,8 +51,8 @@ public class GameStateManager {
       PlayerUtils.resetPlayerStatus(player);
       generatePortal();
 
-      player.sendMessage("ゲーム状態がREADYになりました。ポータルに入りゲームを開始してください！");
-      player.sendMessage("ポータルに入らなかった場合、30秒でゲーム状態がIDLEに戻ります。");
+      player.sendMessage("ポータルに入って、ゲームを始めよう！");
+      player.sendMessage("ポータルに入らなかった場合、30秒でポータルが削除されます");
 
       gameReadyTask = new BukkitRunnable() {
         @Override
@@ -60,7 +62,7 @@ public class GameStateManager {
       }.runTaskLater(main, 20 * 30);
 
     } else {
-      player.sendMessage("ゲーム状態がIDLEでないため、コマンドの処理を実行できません。");
+      player.sendMessage(ChatColor.RED + "ゲーム中のため、コマンドの処理を実行できません。");
     }
   }
 
@@ -70,7 +72,7 @@ public class GameStateManager {
   public void onReadyTimeout() {
     state = GameState.IDLE;
     removePortal();
-    player.sendMessage("30秒経過したため、ゲーム状態がIDLEになりました。");
+    player.sendMessage(ChatColor.RED + "30秒経過したため、ポータルが削除されました。");
     resetToIdle();
   }
 
@@ -93,10 +95,15 @@ public class GameStateManager {
 
       player.teleport(teleportWorld.getSpawnLocation());
       playerScoreListener.setTeleportWorld(teleportWorld);
+      player.sendTitle(
+          "§aGameStart！",
+          "§a鉱石を採掘しよう!",
+          10, 60, 10);
 
       removePortal();
 
-      schedulerManager = new SchedulerManager(main, player, this::onGameTimeout);
+      schedulerManager = new SchedulerManager(main, player, this::onGameTimeout,
+          playerScoreListener::getPlayerScore);
       schedulerManager.gameStart();
     }
   }
@@ -108,6 +115,10 @@ public class GameStateManager {
     state = GameState.IDLE;
 
     player.teleport(gameStartLocation);
+    player.sendTitle(
+        "§6§lTimeUP!",
+        "§6§lスコアは" + playerScoreListener.getPlayerScore() + "§6§l点！",
+        10, 100, 10);
     PlayerUtils.resetPlayerStatus(player);
 
     worldGeneration.removeWorld();
