@@ -2,6 +2,7 @@ package plugin.oremining.listener;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -40,21 +41,27 @@ public class PlayerScoreListener implements Listener {
           if (count == 3) {
             playerScore = playerScore + 30;
             count = 0;
+            player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "★ ボーナス！+30点 ★");
           }
 
           oreType = e.getBlock().getType();
 
           switch (oreType) {
-            case DIAMOND_ORE -> playerScore = playerScore + 30;
-            case GOLD_ORE -> playerScore = playerScore + 20;
-            case IRON_ORE -> playerScore = playerScore + 10;
+            case DIAMOND_ORE -> {
+              playerScore = playerScore + 30;
+              player.sendMessage(ChatColor.AQUA + "[+30] ダイヤモンド鉱石を採掘！");
+            }
+            case GOLD_ORE -> {
+              playerScore = playerScore + 20;
+              player.sendMessage(ChatColor.GOLD + "[+20] 金鉱石を採掘！");
+            }
+            case IRON_ORE -> {
+              playerScore = playerScore + 10;
+              player.sendMessage(ChatColor.GRAY + "[+10] 鉄鉱石を採掘！");
+            }
             default -> {
-              return;
             }
           }
-
-          player.sendMessage("現在のスコアは" + playerScore + "点です！");
-
         }
       }
     }
