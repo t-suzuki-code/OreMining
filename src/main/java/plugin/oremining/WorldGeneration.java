@@ -12,7 +12,9 @@ public class WorldGeneration {
 
   public WorldGeneration() {
     WorldCreator creator = new WorldCreator("OreMiningWorld");
-    this.world = creator.createWorld();
+    VoidChunkGenerator voidChunkGenerator = new VoidChunkGenerator();
+
+    this.world = creator.generator(voidChunkGenerator).createWorld();
   }
 
   public World getWorld() {
