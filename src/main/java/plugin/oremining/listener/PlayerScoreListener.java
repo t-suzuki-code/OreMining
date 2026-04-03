@@ -1,14 +1,15 @@
 package plugin.oremining.listener;
 
+import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import plugin.oremining.GameState;
 
 public class PlayerScoreListener implements Listener {
 
@@ -19,7 +20,7 @@ public class PlayerScoreListener implements Listener {
   @Getter
   private int playerScore;
   @Setter
-  private World teleportWorld;
+  private Supplier<GameState> gameStateSupplier;
 
 
   @EventHandler
@@ -27,7 +28,7 @@ public class PlayerScoreListener implements Listener {
 
     Player player = e.getPlayer();
 
-    if (e.getPlayer().getWorld() == teleportWorld) {
+    if (gameStateSupplier.get() == GameState.PLAYING) {
 
       switch (e.getBlock().getType()) {
         case DIAMOND_ORE, GOLD_ORE, IRON_ORE -> {

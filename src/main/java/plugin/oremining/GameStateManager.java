@@ -2,6 +2,7 @@ package plugin.oremining;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +24,7 @@ public class GameStateManager {
   private SchedulerManager schedulerManager;
   private WorldGeneration worldGeneration;
 
+  @Getter
   private GameState state = GameState.IDLE;
   private Player player;
   private Location gameStartLocation;
@@ -94,7 +96,6 @@ public class GameStateManager {
       miningAreaBuilder.build();
 
       player.teleport(teleportWorld.getSpawnLocation());
-      playerScoreListener.setTeleportWorld(teleportWorld);
       player.sendTitle(
           "§aGameStart！",
           "§a鉱石を採掘しよう!",
