@@ -19,6 +19,7 @@ public final class Main extends JavaPlugin {
     DBManager dbManager = new DBManager();
 
     GameStateManager gameStateManager = new GameStateManager(this, playerScoreListener, dbManager);
+    playerScoreListener.setGameStateSupplier(gameStateManager::getState);
 
     GameSetupCommand gameSetupCommand = new GameSetupCommand(gameStateManager);
     getCommand("gameSetup").setExecutor(gameSetupCommand);
