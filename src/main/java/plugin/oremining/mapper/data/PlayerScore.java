@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * プレイヤーのスコア情報を扱うオブジェクト。 DBに存在するテーブルと連動する。
+ * プレイヤーのスコア情報を扱うオブジェクト。 DBに存在するテーブルと連動します。
  */
 @Getter
 @Setter

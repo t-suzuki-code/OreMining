@@ -13,6 +13,11 @@ public class WorldTeleportListener implements Listener {
     this.gameStateManager = gameStateManager;
   }
 
+  /**
+   * GameStateManagerにポータル通過イベントを通知します。
+   *
+   * @param e イベント情報
+   */
   @EventHandler
   public void onPlayerPortal(PlayerPortalEvent e) {
     gameStateManager.onPlayerPortal(e);

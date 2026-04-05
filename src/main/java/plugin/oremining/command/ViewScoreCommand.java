@@ -15,17 +15,11 @@ public class ViewScoreCommand extends BaseCommand {
   public boolean onExecutePlayerCommand(Player player, Command command, String label,
       String[] args) {
 
+    //キャッシュが古いデータを返す問題を回避するため、インスタンスを生成。
     DBManager dbManager = new DBManager();
-    List<PlayerScore> playerScoreList = dbManager.selectList();
 
-    for (PlayerScore playerScore : playerScoreList) {
-      player.sendMessage(
-          playerScore.getId() + " | "
-              + playerScore.getPlayerName() + " | "
-              + playerScore.getScore() + " | "
-              + playerScore.getRegisteredAt()
-              .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-    }
+    List<PlayerScore> playerScoreList = dbManager.selectList();
+    sendScoreList(player, playerScoreList);
 
     return true;
   }
@@ -34,6 +28,23 @@ public class ViewScoreCommand extends BaseCommand {
   public boolean onExecuteConsoleCommand(CommandSender sender, Command command, String label,
       String[] args) {
     return false;
+  }
+
+  /**
+   * スコア一覧をフォーマットしてプレイヤーに送信する。
+   *
+   * @param player          コマンドを実行したプレイヤー
+   * @param playerScoreList DBから取得したプレイヤースコア情報を入れたリスト
+   */
+  private void sendScoreList(Player player, List<PlayerScore> playerScoreList) {
+    for (PlayerScore playerScore : playerScoreList) {
+      player.sendMessage(
+          playerScore.getId() + " | "
+              + playerScore.getPlayerName() + " | "
+              + playerScore.getScore() + " | "
+              + playerScore.getRegisteredAt()
+              .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    }
   }
 }
 

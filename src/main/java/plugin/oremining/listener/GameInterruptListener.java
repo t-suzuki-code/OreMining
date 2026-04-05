@@ -16,21 +16,41 @@ public class GameInterruptListener implements Listener {
     this.gameStateManager = gameStateManager;
   }
 
+  /**
+   * GameStateManagerに死亡イベントを通知します。
+   *
+   * @param e イベント情報
+   */
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent e) {
     gameStateManager.onPlayerDeath();
   }
 
+  /**
+   * GameStateManagerにリスポーンイベントを通知します。
+   *
+   * @param e イベント情報
+   */
   @EventHandler
   public void onPlayerRespawn(PlayerRespawnEvent e) {
     gameStateManager.onPlayerRespawn(e);
   }
 
+  /**
+   * GameStateManagerにログアウトイベントを通知します。
+   *
+   * @param e イベント情報
+   */
   @EventHandler
-  public void onPlayerLogout(PlayerQuitEvent e) {
+  public void onPlayerQuit(PlayerQuitEvent e) {
     gameStateManager.onPlayerQuit();
   }
 
+  /**
+   * GameStateManagerにジョインイベントを通知します。
+   *
+   * @param e イベント情報
+   */
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent e) {
     gameStateManager.onPlayerJoin(e);
