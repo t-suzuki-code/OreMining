@@ -13,29 +13,37 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import plugin.oremining.listener.PlayerScoreListener;
+import plugin.oremining.listener.GameScoreListener;
 import plugin.oremining.mapper.data.PlayerScore;
 
 public class GameStateManager {
 
   private final Main main;
-  private final PlayerScoreListener playerScoreListener;
+  private final GameScoreListener gameScoreListener;
   private final DBManager dbManager;
+
   private SchedulerManager schedulerManager;
   private WorldGeneration worldGeneration;
-
-  @Getter
-  private GameState state = GameState.IDLE;
   private Player player;
   private Location gameStartLocation;
   private BukkitTask gameReadyTask;
 
+  @Getter
+  private GameState state = GameState.IDLE;
+
 
   private final List<Location> portalLocationList = new ArrayList<>();
 
-  public GameStateManager(Main main, PlayerScoreListener playerScoreListener, DBManager dbManager) {
+  /**
+   * GameStateManagerを生成します。
+   *
+   * @param main              タイマー登録用に使用するプラグインインスタンス
+   * @param gameScoreListener スコアの取得・リセットを行うリスナー
+   * @param dbManager         スコアのDB保存を行うマネージャー
+   */
+  public GameStateManager(Main main, GameScoreListener gameScoreListener, DBManager dbManager) {
     this.main = main;
-    this.playerScoreListener = playerScoreListener;
+    this.gameScoreListener = gameScoreListener;
     this.dbManager = dbManager;
   }
 
@@ -104,8 +112,8 @@ public class GameStateManager {
       removePortal();
 
       schedulerManager = new SchedulerManager(main, player, this::onGameTimeout,
-          playerScoreListener::getPlayerScore);
-      schedulerManager.gameStart();
+          gameScoreListener::getGameScore);
+      schedulerManager.startGame();
     }
   }
 
@@ -113,19 +121,19 @@ public class GameStateManager {
    * ゲーム終了時の処理。
    */
   public void onGameTimeout() {
+    int finalScore = gameScoreListener.getGameScore();
     state = GameState.IDLE;
 
     player.teleport(gameStartLocation);
     player.sendTitle(
         "§6§lTimeUP!",
-        "§6§lスコアは" + playerScoreListener.getPlayerScore() + "§6§l点！",
+        "§6§lスコアは" + finalScore + "§6§l点！",
         10, 100, 10);
     PlayerUtils.resetPlayerStatus(player);
-
     worldGeneration.removeWorld();
 
-    dbManager.insert(new PlayerScore(player.getName(), playerScoreListener.getPlayerScore()));
-    playerScoreListener.resetPlayerScore();
+    dbManager.insert(new PlayerScore(player.getName(), finalScore));
+    gameScoreListener.resetGameScore();
     resetToIdle();
   }
 
@@ -159,13 +167,12 @@ public class GameStateManager {
         PlayerUtils.resetPlayerStatus(e.getPlayer());
         state = GameState.IDLE;
         worldGeneration.removeWorld();
-        playerScoreListener.resetPlayerScore();
+        gameScoreListener.resetGameScore();
         resetToIdle();
       }
       case null, default -> {
       }
     }
-
   }
 
   /**
@@ -180,7 +187,6 @@ public class GameStateManager {
         worldGeneration.removeWorld();
       }
     }
-
   }
 
   /**
@@ -191,28 +197,37 @@ public class GameStateManager {
   public void onPlayerJoin(PlayerJoinEvent e) {
     switch (state) {
       case READY -> {
-        if (e.getPlayer().isDead()) {
+        if (restorePlayerOnJoin(e)) {
           return;
         }
-        e.getPlayer().teleport(gameStartLocation);
-        PlayerUtils.resetPlayerStatus(e.getPlayer());
-        state = GameState.IDLE;
         removePortal();
-        resetToIdle();
       }
       case PLAYING -> {
-        if (e.getPlayer().isDead()) {
+        if (restorePlayerOnJoin(e)) {
           return;
         }
-        e.getPlayer().teleport(gameStartLocation);
-        state = GameState.IDLE;
-        PlayerUtils.resetPlayerStatus(e.getPlayer());
-        playerScoreListener.resetPlayerScore();
-        resetToIdle();
+        gameScoreListener.resetGameScore();
       }
       case null, default -> {
       }
     }
+  }
+
+  /**
+   * プレイヤーがログインした際の共通復帰処理を行います。 プレイヤーが死亡中の際は処理をスキップします。
+   *
+   * @param e イベント情報
+   * @return 死亡中で処理をスキップした場合はtrue
+   */
+  private boolean restorePlayerOnJoin(PlayerJoinEvent e) {
+    if (e.getPlayer().isDead()) {
+      return true;
+    }
+    e.getPlayer().teleport(gameStartLocation);
+    state = GameState.IDLE;
+    PlayerUtils.resetPlayerStatus(e.getPlayer());
+    resetToIdle();
+    return false;
   }
 
   /**

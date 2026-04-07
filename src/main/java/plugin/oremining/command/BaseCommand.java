@@ -6,6 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
 
+/**
+ * コマンドを実行して動かすプラグイン処理の基底クラスです。
+ */
 public abstract class BaseCommand implements CommandExecutor {
 
   @Override

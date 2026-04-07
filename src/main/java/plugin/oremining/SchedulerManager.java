@@ -17,6 +17,14 @@ public class SchedulerManager {
   private BukkitTask gameTask;
 
 
+  /**
+   * SchedulerManagerを生成します。
+   *
+   * @param main          タイマー登録に使用するプラグインインスタンス
+   * @param player        アクションバーの送信先プレイヤー
+   * @param onGameTimeUp  制限時間終了時に実行されるコールバック
+   * @param scoreSupplier 現在のスコアを取得するためのコールバック
+   */
   public SchedulerManager(Main main, Player player, Runnable onGameTimeUp,
       Supplier<Integer> scoreSupplier) {
     this.main = main;
@@ -25,7 +33,10 @@ public class SchedulerManager {
     this.scoreSupplier = scoreSupplier;
   }
 
-  public void gameStart() {
+  /**
+   * ゲームの制限時間の管理。 プレイヤーへスコアと残り時間を表示します。
+   */
+  public void startGame() {
 
     gameTask = Bukkit.getScheduler().runTaskTimer(main, () -> {
       if (gameTime <= 0) {
@@ -41,7 +52,7 @@ public class SchedulerManager {
                   + "｜"
                   + "残り時間は" + gameTime + "秒です！"));
 
-      gameTime -= 1;
+      gameTime--;
     }, 0, 20);
   }
 

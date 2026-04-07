@@ -13,6 +13,7 @@ public class MiningAreaBuilder {
 
   private final World world;
   private Location basePosition;
+  private final int random = new SplittableRandom().nextInt(100);
 
   // ===== エリアサイズ =====
   private static final int AREA_HALF = 49;
@@ -154,22 +155,15 @@ public class MiningAreaBuilder {
     int baseY = basePosition.getBlockY();
     int baseZ = basePosition.getBlockZ();
 
-    // X方向の枝通路（正のZ方向）
-    for (int z = BRANCH_START_OFFSET; z < AREA_HALF; z += TUNNEL_PERIOD) {
-      for (int x = -AREA_HALF + 1; x < AREA_HALF; x++) {
-        for (int blockY = TUNNEL_MIN_Y; blockY <= TUNNEL_MAX_Y; blockY++) {
-          world.getBlockAt(baseX + x, baseY + blockY, baseZ + z)
-              .setType(Material.AIR);
-        }
-      }
-    }
-
-    // X方向の枝通路（負のZ方向）
-    for (int z = BRANCH_START_OFFSET; z < AREA_HALF; z += TUNNEL_PERIOD) {
-      for (int x = -AREA_HALF + 1; x < AREA_HALF; x++) {
-        for (int blockY = TUNNEL_MIN_Y; blockY <= TUNNEL_MAX_Y; blockY++) {
-          world.getBlockAt(baseX + x, baseY + blockY, baseZ - z)
-              .setType(Material.AIR);
+    // X方向の枝通路（正負両方向）
+    int[] signs = {1, -1};
+    for (int sign : signs) {
+      for (int z = BRANCH_START_OFFSET; z < AREA_HALF; z += TUNNEL_PERIOD) {
+        for (int x = -AREA_HALF + 1; x < AREA_HALF; x++) {
+          for (int blockY = TUNNEL_MIN_Y; blockY <= TUNNEL_MAX_Y; blockY++) {
+            world.getBlockAt(baseX + x, baseY + blockY, baseZ + z * sign)
+                .setType(Material.AIR);
+          }
         }
       }
     }
@@ -271,7 +265,7 @@ public class MiningAreaBuilder {
    * @return 鉄鉱石、金鉱石、ダイヤモンド鉱石のいずれか
    */
   private Material getRandomOre() {
-    int random = new SplittableRandom().nextInt(100);
+
     if (random < IRON_ORE_RATE) {
       return Material.IRON_ORE;
     }
