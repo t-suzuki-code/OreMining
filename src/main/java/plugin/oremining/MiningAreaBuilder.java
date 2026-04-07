@@ -13,7 +13,7 @@ public class MiningAreaBuilder {
 
   private final World world;
   private Location basePosition;
-  private final int random = new SplittableRandom().nextInt(100);
+  private final SplittableRandom random = new SplittableRandom();
 
   // ===== エリアサイズ =====
   private static final int AREA_HALF = 49;
@@ -266,10 +266,12 @@ public class MiningAreaBuilder {
    */
   private Material getRandomOre() {
 
-    if (random < IRON_ORE_RATE) {
+    int value = random.nextInt(100);
+
+    if (value < IRON_ORE_RATE) {
       return Material.IRON_ORE;
     }
-    if (random < GOLD_ORE_RATE) {
+    if (value < GOLD_ORE_RATE) {
       return Material.GOLD_ORE;
     }
     return Material.DIAMOND_ORE;
