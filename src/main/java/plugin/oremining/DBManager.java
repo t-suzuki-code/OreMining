@@ -15,14 +15,12 @@ import plugin.oremining.mapper.data.PlayerScore;
  */
 public class DBManager {
 
-  private final PlayerScoreMapper mapper;
+  private final SqlSessionFactory sqlSessionFactory;
 
   public DBManager() {
     try {
       InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
-      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-      SqlSession session = sqlSessionFactory.openSession(true);
-      this.mapper = session.getMapper(PlayerScoreMapper.class);
+      this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -34,7 +32,9 @@ public class DBManager {
    * @return スコア情報の一覧。
    */
   public List<PlayerScore> selectList() {
-    return mapper.selectList();
+    try (SqlSession session = sqlSessionFactory.openSession(true)) {
+      return session.getMapper(PlayerScoreMapper.class).selectList();
+    }
   }
 
   /**
@@ -43,6 +43,8 @@ public class DBManager {
    * @param playerScore プレイヤースコア
    */
   public void insert(PlayerScore playerScore) {
-    mapper.insert(playerScore);
+    try (SqlSession session = sqlSessionFactory.openSession(true)) {
+      session.getMapper(PlayerScoreMapper.class).insert(playerScore);
+    }
   }
 }

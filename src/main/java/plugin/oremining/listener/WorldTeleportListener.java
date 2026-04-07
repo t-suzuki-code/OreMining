@@ -14,7 +14,7 @@ public class WorldTeleportListener implements Listener {
   }
 
   /**
-   * GameStateManagerにポータル通過イベントを通知します。
+   * プレイヤーポータル通過イベントを状態管理クラスに通知します。
    *
    * @param e イベント情報
    */

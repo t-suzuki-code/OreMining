@@ -10,13 +10,15 @@ import plugin.oremining.mapper.data.PlayerScore;
 
 public class ViewScoreCommand extends BaseCommand {
 
+  private final DBManager dbManager;
+
+  public ViewScoreCommand(DBManager dbManager) {
+    this.dbManager = dbManager;
+  }
 
   @Override
   public boolean onExecutePlayerCommand(Player player, Command command, String label,
       String[] args) {
-
-    //キャッシュが古いデータを返す問題を回避するため、インスタンスを生成。
-    DBManager dbManager = new DBManager();
 
     List<PlayerScore> playerScoreList = dbManager.selectList();
     sendScoreList(player, playerScoreList);

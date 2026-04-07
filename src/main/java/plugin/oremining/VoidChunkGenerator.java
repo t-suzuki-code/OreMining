@@ -6,10 +6,8 @@ import org.jspecify.annotations.NonNull;
 
 public class VoidChunkGenerator extends ChunkGenerator {
 
-
   @Override
   public void generateNoise(@NonNull WorldInfo worldInfo, java.util.@NonNull Random random,
-      int chunkX, int chunkZ,
-      @NonNull ChunkData chunkData) {
+      int chunkX, int chunkZ, @NonNull ChunkData chunkData) {
   }
 }

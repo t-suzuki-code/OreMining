@@ -4,4 +4,8 @@ main: plugin.oremining.Main
 api-version: '1.21'
 commands:
   gameSetup:
+    description: ゲームの準備を開始します。
+    usage: /gameSetup
   viewScore:
+    description: スコアランキングの上位10件を表示します。
+    usage: /viewScore

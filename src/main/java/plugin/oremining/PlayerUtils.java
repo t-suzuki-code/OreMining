@@ -23,12 +23,6 @@ public class PlayerUtils {
     inventory.clear();
     inventory.setItem(0, new ItemStack(Material.FLINT_AND_STEEL));
     inventory.setItem(1, new ItemStack(Material.NETHERITE_PICKAXE));
-    inventory.setItem(2, new ItemStack(Material.TORCH, 20));
-    inventory.setItem(3, new ItemStack(Material.LAVA_BUCKET));
-    inventory.setHelmet(new ItemStack(Material.NETHERITE_HELMET));
-    inventory.setChestplate(new ItemStack(Material.NETHERITE_CHESTPLATE));
-    inventory.setLeggings(new ItemStack(Material.NETHERITE_LEGGINGS));
-    inventory.setBoots(new ItemStack(Material.NETHERITE_BOOTS));
   }
 
   /**
@@ -36,7 +30,7 @@ public class PlayerUtils {
    *
    * @param player コマンドを実行したプレイヤー。
    */
-  public static void removePotionEffect(Player player) {
+  private static void removePotionEffect(Player player) {
     player.getActivePotionEffects().stream()
         .map(PotionEffect::getType)
         .forEach(player::removePotionEffect);

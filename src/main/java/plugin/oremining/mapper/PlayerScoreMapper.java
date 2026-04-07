@@ -11,7 +11,7 @@ public interface PlayerScoreMapper {
   List<PlayerScore> selectList();
 
 
-  @Insert("insert oremining_player_score(player_name, score, registered_at) "
+  @Insert("insert INTO oremining_player_score(player_name, score, registered_at) "
       + "values(#{playerName}, #{score}, now())")
   void insert(PlayerScore playerScore);
 }

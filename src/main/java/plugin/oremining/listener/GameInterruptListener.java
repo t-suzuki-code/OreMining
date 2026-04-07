@@ -17,7 +17,7 @@ public class GameInterruptListener implements Listener {
   }
 
   /**
-   * GameStateManagerに死亡イベントを通知します。
+   * プレイヤー死亡イベントをゲーム状態管理クラスに通知します。
    *
    * @param e イベント情報
    */
@@ -26,8 +26,9 @@ public class GameInterruptListener implements Listener {
     gameStateManager.onPlayerDeath();
   }
 
+
   /**
-   * GameStateManagerにリスポーンイベントを通知します。
+   * プレイヤーリスポーンイベントをゲーム状態管理クラスに通知します。
    *
    * @param e イベント情報
    */
@@ -37,7 +38,7 @@ public class GameInterruptListener implements Listener {
   }
 
   /**
-   * GameStateManagerにログアウトイベントを通知します。
+   * プレイヤーログアウトイベントをゲーム状態管理クラスに通知します。
    *
    * @param e イベント情報
    */
@@ -47,7 +48,7 @@ public class GameInterruptListener implements Listener {
   }
 
   /**
-   * GameStateManagerにジョインイベントを通知します。
+   * プレイヤーログインイベントをゲーム状態管理クラスに通知します。
    *
    * @param e イベント情報
    */
