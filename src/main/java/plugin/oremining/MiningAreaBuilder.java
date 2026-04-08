@@ -9,6 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+/**
+ * 採掘エリアの構築を行うクラスです。
+ */
 public class MiningAreaBuilder {
 
   private final World world;
@@ -37,7 +40,7 @@ public class MiningAreaBuilder {
   private static final int SPAWN_HALF = 3;
 
   // ===== 鉱石 =====
-  private static final int ORE_COUNT = 500;// 要調整
+  private static final int ORE_COUNT = 500;
 
   // ===== 鉱石の出現率（%） =====
   private static final int IRON_ORE_RATE = 50;

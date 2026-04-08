@@ -16,6 +16,9 @@ import org.bukkit.scheduler.BukkitTask;
 import plugin.oremining.listener.GameScoreListener;
 import plugin.oremining.mapper.data.PlayerScore;
 
+/**
+ * ゲームの状態管理と進行制御を行うクラスです。 コマンドやリスナーからの通知を受け、状態に応じた処理を実行します。
+ */
 public class GameStateManager {
 
   private final Main main;

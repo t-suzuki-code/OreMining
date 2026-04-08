@@ -11,6 +11,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import plugin.oremining.GameState;
 
+/**
+ * 鉱石採掘を検知し、スコアの加算・ボーナス判定を行うリスナーです。
+ */
 public class GameScoreListener implements Listener {
 
   private int comboCount;
