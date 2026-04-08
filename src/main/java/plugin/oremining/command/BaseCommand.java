@@ -23,7 +23,7 @@ public abstract class BaseCommand implements CommandExecutor {
   }
 
   /**
-   * コマンド実行者がプレイヤーだった場合に実行します。
+   * コマンドの実行者がプレイヤーだった場合に実行します。
    *
    * @param player  コマンドを実行したプレイヤー
    * @param command コマンド
@@ -35,7 +35,7 @@ public abstract class BaseCommand implements CommandExecutor {
       String label, String[] args);
 
   /**
-   * コマンド実行者がプレイヤー以外だった場合に実行します。
+   * コマンドの実行者がプレイヤー以外だった場合に実行します。
    *
    * @param sender  コマンドを実行者
    * @param command コマンド

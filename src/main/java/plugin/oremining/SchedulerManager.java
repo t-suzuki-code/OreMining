@@ -7,6 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+/**
+ * ゲーム中の制限時間を管理するクラスです。
+ */
 public class SchedulerManager {
 
   private final Main main;
