@@ -64,7 +64,8 @@
 <!-- 方法1: GitHubにmp4をアップロード -->
 <!-- READMEの編集画面でmp4ファイルをドラッグ＆ドロップすると自動的にリンクが生成されます -->
 
-（プレイ動画をここに挿入）
+![1ADC2680-0173-4F78-AD64-D4AF827033BF_1_105_c](https://github.com/user-attachments/assets/0d6d4c02-dc83-4462-a94f-f02807282d0f)
+
 
 &nbsp;
 
