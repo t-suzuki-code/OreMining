@@ -59,12 +59,14 @@
 
 ## プレイ動画
 
+- ### ゲームプレイデモ
+> https://github.com/user-attachments/assets/8bed03b5-f320-493f-a4d0-6b45b8d6a886
 
-https://github.com/user-attachments/assets/8bed03b5-f320-493f-a4d0-6b45b8d6a886
 
 
 
-https://github.com/user-attachments/assets/970c8bf1-9e5a-4955-98eb-3d5eed016ad4
+- ### スコア確認方法
+> https://github.com/user-attachments/assets/970c8bf1-9e5a-4955-98eb-3d5eed016ad4
 
 
 
