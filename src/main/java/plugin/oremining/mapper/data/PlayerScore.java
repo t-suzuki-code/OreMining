@@ -13,8 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 
 public class PlayerScore {
-
-  private int id;
+  
   private String playerName;
   private int score;
   private LocalDateTime registeredAt;

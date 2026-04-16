@@ -39,9 +39,10 @@ public class ViewScoreCommand extends BaseCommand {
    * @param playerScoreList DBから取得したプレイヤースコア情報を入れたリスト
    */
   private void sendScoreList(Player player, List<PlayerScore> playerScoreList) {
-    for (PlayerScore playerScore : playerScoreList) {
+    for (int i = 0; i < playerScoreList.size(); i++) {
+      PlayerScore playerScore = playerScoreList.get(i);
       player.sendMessage(
-          playerScore.getId() + " | "
+          (i + 1) + "位" + " | "
               + playerScore.getPlayerName() + " | "
               + playerScore.getScore() + " | "
               + playerScore.getRegisteredAt()
