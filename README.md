@@ -1,3 +1,5 @@
+
+
 # OreMining
 
 ## はじめに
@@ -66,7 +68,7 @@
 
 
 - ### スコア確認方法
-> https://github.com/user-attachments/assets/970c8bf1-9e5a-4955-98eb-3d5eed016ad4
+> https://github.com/user-attachments/assets/404dff6d-3982-4411-a8a0-7a6d2d7e763f
 
 
 
