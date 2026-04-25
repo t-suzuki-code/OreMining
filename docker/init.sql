@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS oremining_player_score (
+    id INT NOT NULL AUTO_INCREMENT,
+    player_name VARCHAR(100) DEFAULT NULL,
+    score INT DEFAULT NULL,
+    registered_at DATETIME DEFAULT NULL,
+    PRIMARY KEY (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
