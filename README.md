@@ -21,6 +21,7 @@
 - [設計・工夫したところ](#設計工夫したところ)
 - [クラス構成](#クラス構成)
 - [今後実装予定の機能](#今後実装予定の機能)
+- [変更履歴](#変更履歴)
 - [おわりに](#おわりに)
 
 &nbsp;
@@ -139,26 +140,42 @@
 
 - Java 21 以上をインストールしてください
 - Spigot 1.21.11 のサーバーを用意してください
-- MySQLをインストールし、起動してください
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) をインストールしてください
 
-### 2. データベースの準備
+### 2. データベースの準備（Docker）
 
-- MySQLに接続し、以下のSQLを実行してテーブルを作成してください
+- `.env` ファイルを作成してください
 
-```sql
-CREATE TABLE oremining_player_score (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    player_name VARCHAR(255),
-    score INT,
-    registered_at DATETIME
-);
+```bash
+cp docker/.env.example docker/.env
 ```
 
-- `src/main/resources/mybatis-config.xml` のDB接続情報をご自身の環境に合わせて変更してください
+- `docker/.env` を開き、MySQLのrootパスワードを設定してください
+
+```
+MYSQL_ROOT_PASSWORD=your_password_here
+```
+
+- `src/main/resources/mybatis-config.xml` のDB接続情報を、設定したパスワードに合わせて変更してください
+
+- Docker Desktopを起動した状態で、以下のコマンドを実行してください
+
+```bash
+cd docker
+docker compose up -d
+```
+
+- データベースとテーブルが自動的に作成されます
 
 > **⚠️ 注意**  
 > リポジトリに含まれるパスワードはローカル開発用のサンプル値です。  
 > 公開環境で使用する場合は、必ずご自身で安全なパスワードに変更してください。
+
+- コンテナを停止する場合は、以下のコマンドを実行してください
+
+```bash
+docker compose down
+```
 
 ### 3. プラグインのビルド
 
@@ -249,6 +266,14 @@ plugin.oremining/
 
 ### マルチプレイ対応
 - ゲーム中に無関係のプレイヤーが死亡/ログアウトしても onPlayerDeath が発火してゲームが強制終了してしまう点の改善
+
+## 変更履歴
+
+| 日付 | 内容 |
+| --- | --- |
+| 2026/04/25 | Docker ComposeによるMySQL環境構築に対応（手動でのMySQL・テーブル作成が不要に） |
+
+&nbsp;
 
 ## おわりに
 
